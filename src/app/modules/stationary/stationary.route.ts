@@ -3,4 +3,11 @@ import { productController } from './stationary.controller';
 
 const router = express.Router();
 
-router.post('/api/products', productController.createStationaryProduct);
+//All Routes for stationary
+router.post('/', productController.createStationaryProduct);
+router.get('/', productController.getAllStationaryProducts);
+router.get('/:productId', productController.getStationaryProductById);
+router.put('/:productId', productController.updateStationaryProduct);
+router.delete('/:productId', productController.deleteStationaryProduct);
+
+export const productRoutes = router;

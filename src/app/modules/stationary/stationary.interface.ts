@@ -1,6 +1,5 @@
-import { Schema, model, connect } from 'mongoose';
-
-export type Tstationary = {
+//Define Interface
+export type TStationary = {
   name: string;
   brand: string;
   price: number;
