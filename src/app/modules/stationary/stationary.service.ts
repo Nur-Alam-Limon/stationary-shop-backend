@@ -26,6 +26,7 @@ const updateStationaryProductDB = async (
 ) => {
   const updatedProduct = await StationaryModel.findByIdAndUpdate(id, updates, {
     new: true,
+    runValidators: true,
   });
   return updatedProduct;
 };
