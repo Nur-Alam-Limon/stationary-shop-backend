@@ -1,0 +1,16 @@
+import { Schema, model, connect } from 'mongoose';
+
+export type Tstationary = {
+  name: string;
+  brand: string;
+  price: number;
+  category:
+    | 'Writing'
+    | 'Office Supplies'
+    | 'Art Supplies'
+    | 'Educational'
+    | 'Technology';
+  description: string;
+  quantity: number;
+  inStock: boolean;
+};
