@@ -4,7 +4,7 @@ import { StationaryServices } from './stationary.service';
 // Controller to create a new stationary product
 const createStationaryProduct = async (req: Request, res: Response) => {
   try {
-    const product = req.body.product; // Extract product data from request body
+    const product = req.body; // Extract product data from request body
     const result = await StationaryServices.createStationaryProductDB(product);
 
     // Respond with success message and product data
