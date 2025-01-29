@@ -9,18 +9,12 @@ const StationarySchema = new Schema<TStationary>(
     price: { type: Number, required: true, min: 0 },
     category: {
       type: String,
-      enum: [
-        'Writing',
-        'Office Supplies',
-        'Art Supplies',
-        'Educational',
-        'Technology',
-      ],
       required: true,
     },
     description: { type: String, required: true },
     quantity: { type: Number, required: true, min: 0 },
     inStock: { type: Boolean, required: true },
+    productImg: { type: String, required: true}
   },
   {
     timestamps: true,

@@ -32,12 +32,31 @@ export const createOrder = async (data: {
     product: data.product,
     quantity: data.quantity,
     totalPrice,
+    status: 'pending', // Default status is "pending"
   });
 };
 
 // Get all orders, including product details
 export const getAllOrders = async () => {
   return await OrderModel.find().populate('product'); // Populate the product data
+};
+
+// Get orders by user email
+export const getOrdersByEmail = async (email: string) => {
+  return await OrderModel.find({ email }).populate('product'); // Find orders by email
+};
+
+// Update order status
+export const updateOrderStatus = async (orderId: string, status: string) => {
+  const order = await OrderModel.findById(orderId); // Find the order by ID
+  if (!order) {
+    throw { message: 'Order not found', status: 404 }; // If order not found
+  }
+
+  order.status = status; // Update status
+  await order.save(); // Save the updated order
+
+  return order; // Return the updated order
 };
 
 // Calculate total revenue from all orders

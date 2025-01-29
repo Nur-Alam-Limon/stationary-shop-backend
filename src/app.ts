@@ -3,6 +3,7 @@ import express, { Application, Request, Response } from 'express';
 import { productRoutes } from './app/modules/stationary/stationary.route';
 import cors from 'cors';
 import { OrderRoutes } from './app/modules/order/orders.route';
+import { authRoutes } from './app/modules/auth/auth.routes';
 
 // Create app using express
 const app: Application = express();
@@ -11,7 +12,11 @@ const app: Application = express();
 app.use(express.json());
 
 // Enable CORS (Cross-Origin Resource Sharing) for all origins
-app.use(cors());
+app.use(cors({
+  origin: '*', 
+  methods: 'GET,POST,PUT', // Allow these methods
+  allowedHeaders: 'Content-Type,Authorization', // Allow these headers
+}));
 
 // Root endpoint
 app.get('/', (req: Request, res: Response) => {
@@ -26,6 +31,8 @@ app.get('/', (req: Request, res: Response) => {
 
 // product routes with the path '/api/products'
 app.use('/api/products', productRoutes);
+
+app.use('/api/auth', authRoutes);
 
 // order routes with the path '/api/orders'
 app.use('/api/orders', OrderRoutes);
