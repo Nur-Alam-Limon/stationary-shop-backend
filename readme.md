@@ -1,6 +1,6 @@
 # Stationary Shop Backend
 
-This is a backend server for the Stationary Shop application, built using TypeScript, Express, and MongoDB. It provides APIs to manage stationary products and customer orders.
+This is a backend server for the Stationary Shop application, built using TypeScript, Express, and MongoDB. It provides APIs to manage stationary products, user login, registration and customer orders.
 
 **Live Link** - https://stationary-shop-backend.vercel.app/
 
@@ -8,8 +8,11 @@ This is a backend server for the Stationary Shop application, built using TypeSc
 
 - **Product Management**: Add, update, and manage stationary products.
 - **Order Management**: Place orders, update stock, and calculate total prices.
+- **User Management**: User Registration, login and get, update user.
+- **Authorization**: Authorize all routes, make route role based.
 - **Modular Architecture**: Clean and organized folder structure for scalability.
 - **Data Validation**: Strongly typed models using Mongoose and TypeScript.
+
 
 ## API Routes
 
@@ -71,10 +74,85 @@ This is a backend server for the Stationary Shop application, built using TypeSc
   }
   ```
 
-### 7. Calculate Revenue from Orders
+### 7. Get All Orders (Admin Only)
+
+- **Endpoint**: `/api/orders`
+- **Method**: `GET`
+- **Authorization**: Admin
+
+### 8. Get Orders by User Email
+
+- **Endpoint**: `/api/orders/user-orders`
+- **Method**: `GET`
+- **Authorization**: User
+
+### 9. Update Order Status (Admin Only)
+
+- **Endpoint**: `/api/orders/order-status`
+- **Method**: `PUT`
+- **Authorization**: Admin
+- **Request Body**:
+  ```json
+  {
+    "orderId": "648a45e5f0123c45678d9012",
+    "status": "shipped"
+  }
+  ```
+
+### 10. Calculate Revenue from Orders (Admin Only)
 
 - **Endpoint**: `/api/orders/revenue`
 - **Method**: `GET`
+- **Authorization**: Admin
+
+## Authentication Routes
+
+### 1. User Registration
+
+- **Endpoint**: `/api/auth/register`
+- **Method**: `POST`
+- **Request Body**:
+  ```json
+  {
+    "name": "John Doe",
+    "email": "johndoe@example.com",
+    "password": "securepassword"
+  }
+  ```
+
+### 2. User Login
+
+- **Endpoint**: `/api/auth/login`
+- **Method**: `POST`
+- **Request Body**:
+  ```json
+  {
+    "email": "johndoe@example.com",
+    "password": "securepassword"
+  }
+  ```
+
+### 3. Update User Profile
+
+- **Endpoint**: `/api/auth/updateProfile`
+- **Method**: `POST`
+- **Authorization**: User
+- **Request Body**:
+  ```json
+  {
+    "name": "John Doe",
+    "phone": "+1234567890",
+    "address": "123 Street, City",
+    "profilePic": "https://example.com/profile.jpg",
+    "status": "active"
+  }
+  ```
+
+### 4. Get All Users (Admin Only)
+
+- **Endpoint**: `/api/auth/users`
+- **Method**: `GET`
+- **Authorization**: Admin
 
 ---
 
@@ -98,6 +176,10 @@ This is a backend server for the Stationary Shop application, built using TypeSc
    ```
    PORT=3000
    MONGO_URI=mongodb://<username>:<password>@cluster0.mongodb.net/<dbname>?retryWrites=true&w=majority
+   NODE_ENV=development
+  JWT_SECRET=
+  SSL_STORE_ID=
+  SSL_STORE_PASSWORD=
    ```
 
 ---
