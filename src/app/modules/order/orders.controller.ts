@@ -1,9 +1,11 @@
 import { Request, Response } from 'express';
 import * as OrderService from './orders.service';
 import SSLCommerzPayment from "sslcommerz-lts";
+import OrderModel from './orders.model';
 
 export const initiatePayment = async (req: Request, res: Response) => {
-  const { total_amount, currency, tran_id, success_url, fail_url, cancel_url, customer } = req.body;
+  const { total_amount, currency, tran_id, success_url, fail_url, cancel_url, customer, cartItems } = req.body;
+  // console.log("Request Body", req.body)
 
   // SSLCommerz credentials
   const store_id = process.env.SSL_STORE_ID || "nuralam098";
@@ -43,10 +45,23 @@ export const initiatePayment = async (req: Request, res: Response) => {
     // Initialize the payment
     const apiResponse = await sslcz.init(paymentData);
 
-    console.log("SSLCommerz Response:", apiResponse);
+    // console.log("SSLCommerz Response:", apiResponse);
 
     // Check for successful initialization and redirect the user
     if (apiResponse.status === "SUCCESS" && apiResponse.GatewayPageURL) {
+      for (const item of cartItems) {
+          const totalPrice = item.price * item.cartQuantity;
+
+          console.log("sdadsa", item)
+
+          await OrderModel.create({
+            email: customer.email,
+            product: item._id,
+            quantity: item.cartQuantity,
+            totalPrice,
+            status: "pending",
+          });
+        }
       res.status(200).json({ success: true, message: "Success payment", GatewayPageURL: apiResponse.GatewayPageURL });
     } else {
       res.status(400).json({ success: false, message: "Failed to initiate payment", error: apiResponse });
@@ -152,3 +167,4 @@ export const changeOrderStatus = async (req: Request, res: Response) => {
     });
   }
 };
+
